@@ -3,23 +3,37 @@ import numpy as np
 import random
 
 class DecTable:
+    global decision_sign
+    decision_sign = 'd'  # stands for decision, used in DaraFrame object header
 
-    def __init__(self, attributes_number, rows_number, attributes_subset):
+    def __init__(self, attributes_number, rows_number, attributes_subset, table=None):
+        self.d = decision_sign
+        self.decision_values = [0,1]
+        self.attribute_values = [0,1]        
         self.attributes_number = attributes_number
         self.rows_number = rows_number
         self.attributes_subset = attributes_subset
-        self.decision_values = [0,1]
-        self.attribute_values = [0,1]
-        self.table = DecTable.__table_fill(self)
+        if table is None:
+            self.table = DecTable.__table_fill(self)
+        else:
+            self.table = table
+
+    @staticmethod
+    def table_to_dectable(table):
+        attributes_number = len(table.columns) - 1  # minus decision
+        rows_number = len(table)
+        attributes_subset = list(table.columns) 
+        attributes_subset.remove(decision_sign) # minus decision
+        return DecTable(attributes_number, 
+            rows_number, attributes_subset, table)
 
     def __table_fill(self):
         """ 
         This method ensures that no row will be duplicated 
         or contradictory in the final decision table.
         """
-
         header = [attribute for attribute in self.attributes_subset]
-        header.append('d') # 'd' stands for decision
+        header.append(self.d) 
 
         rows_list = []
         for i in range(self.rows_number):
@@ -41,4 +55,6 @@ class DecTable:
 
     def show(self):
         print(self.table)
+
+    
 
