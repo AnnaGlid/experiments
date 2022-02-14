@@ -10,3 +10,6 @@ class Rule:
             string_rule += '{}={} '.format(attribute, value)
         string_rule += 'd={}'.format(self.decision)
         return string_rule
+    
+    def append_attribute(self, attribute, value):
+        pass
