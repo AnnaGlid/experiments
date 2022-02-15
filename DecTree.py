@@ -13,7 +13,7 @@ class DecTree:
     def __obtain_rules(self, dec_table, rule=''):
         if  dec_table.table[dec_table.d].nunique()==0:
             # first case:
-            # if there are no more attributes or rows left
+            # if there are no more rows left
             # i don't know what do to 
             rule += '{}={}'.format(dec_table.d, '?')
             self.rules.append(rule)
