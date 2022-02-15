@@ -31,7 +31,11 @@ class SetS:
         return agents_list
 
     def __final_algorythm_a(self):
-        max_num_of_trees, rules_with_max_num_of_trees = AlgorythmA.algorythm_a(self.agents_list)
+        list_of_rules =[]
+        for agent in self.agents_list:
+            for rule in agent.dec_tree.rules:
+                list_of_rules.append(rule)
+        max_num_of_trees, rules_with_max_num_of_trees = AlgorythmA.algorythm_a(self.agents_list, list_of_rules)
         self.max_num_of_trees_a = max_num_of_trees
         self.true_rules_a, self.rule_length_a = Rule.choose_shortest_rules(rules_with_max_num_of_trees)
         
