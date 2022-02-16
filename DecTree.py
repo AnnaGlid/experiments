@@ -1,9 +1,8 @@
 import Rule
 import DecTable
 import random
-
+''
 class DecTree:
-
 
     def __init__(self, dec_table):
         self.dec_table = dec_table
@@ -16,14 +15,16 @@ class DecTree:
             # if there are no more rows left
             # i don't know what do to 
             rule += '{}={}'.format(dec_table.d, '?')
-            self.rules.append(rule)
+            if rule.count("=") > 1:
+                self.rules.append(rule)
             return
         elif dec_table.table[dec_table.d].nunique() == 1:
             # second case:
             # if there is only one distinct decision in the subtable
             # the proper rule is appended to tree
             rule += '{}={}'.format(dec_table.d, dec_table.table[dec_table.d].iloc[0])
-            self.rules.append(rule)
+            if rule.count("=") > 1:
+                self.rules.append(rule)
             return
         else:
             # third case:
