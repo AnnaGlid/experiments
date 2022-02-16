@@ -23,11 +23,13 @@ elif part == 2:
     m_values = [5, 10, 15, 20, 25]
 else:
     m_values = [20, 40, 60, 80, 100]
+file_path = 'D:\\BIBLIOTEKI\\dokumenty\\tutoring\\2 wersja algorytmow\\wyniki\\wyniki.txt'
 
-#
-n_values = [10]
-m_values =[10]
-#
+
+n_values = [20]
+m_values =[6]
+number_of_iterations = 10
+
 
 whole = iteration_number()
 i = 0
@@ -44,27 +46,37 @@ for attributes_number in m_values:
 '''
 here goes writing results to file
 '''
-for key, setS in results.items():
-    m = key[0]
-    n = key[1]
-    k = key[2]
-    print(m, n, k)
-    
-    print('Algorythm A:')
-    print('Max nr of trees: ', setS.max_num_of_trees_a)
-    print('Length: ', setS.rule_length_a)
-    print('Rule: ', setS.true_rules_a)
-    print()
+with open(file_path, 'w') as f:
+    for key, setS in results.items():
+        m = key[0]
+        n = key[1]
+        k = key[2]
+        print('m: {}, n:{}, k:{}\n'.format(m,n,k))
 
-    print('Algorythm h1:')
-    print('Max nr of trees: ', setS.max_num_of_trees_h1)
-    print('Length: ', setS.rule_length_h1)
-    print('Rule: ', setS.true_rules_h1)
-    print()
+        print('Tables:\n')
+        for agent in setS.agents_list:
+            agent.dec_tree.show()
+            print()
+        
+        print('\nRules and number of trees for which the rule is true:')
+        for tuple in setS.rule_and_number:
+            print(tuple)
 
-    print('Algorythm h2:')
-    print('Max nr of trees: ', setS.max_num_of_trees_h2)
-    print('Length: ', setS.rule_length_h2)
-    print('Rule: ', setS.true_rules_h2)
-    print('=================================================\n')
+        print('Algorythm A:')
+        print('Max nr of trees: ', setS.max_num_of_trees_a)
+        print('Length: ', setS.rule_length_a)
+        print('Rule: ', setS.true_rules_a[0])
+        print()
+
+        print('Algorythm h1:')
+        print('Max nr of trees: ', setS.max_num_of_trees_h1)
+        print('Length: ', setS.rule_length_h1)
+        print('Rule: ', setS.true_rules_h1[0])
+        print()
+
+        print('Algorythm h2:')
+        print('Max nr of trees: ', setS.max_num_of_trees_h2)
+        print('Length: ', setS.rule_length_h2)
+        print('Rule: ', setS.true_rules_h2[0])
+        print('=================================================\n')
 

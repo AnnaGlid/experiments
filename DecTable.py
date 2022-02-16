@@ -34,13 +34,25 @@ class DecTable:
         """
         header = [attribute for attribute in self.attributes_subset]
         header.append(self.d) 
-
         rows_list = []
         for i in range(self.rows_number):
             rows_list.append(DecTable.__generate_random_row(self, rows_list))
-        for i in range(self.rows_number):
-            rows_list[i].append(random.choice(self.decision_values))
 
+        decisions_set = set()
+        while(True):
+            decisions_set.clear()
+            for i in range(self.rows_number):
+                decision = random.choice(self.decision_values)
+                rows_list[i].append(decision)
+                decisions_set.add(decision)
+            if len(decisions_set) < 2:
+                # if each row in whole table
+                # got the same decision:
+                # delete decision, append decision once again
+                for i in range(self.rows_number):
+                    rows_list[i].pop(-1)
+            else:
+                break
         return pd.DataFrame(np.array(rows_list, dtype=object),  columns=header)
             
     def __generate_random_row(self, rows_list):
