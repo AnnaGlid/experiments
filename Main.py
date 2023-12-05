@@ -1,5 +1,6 @@
 import SetS
 
+
 def iteration_number():
     number = 0
     for attributes_number in m_values:
