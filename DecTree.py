@@ -1,7 +1,7 @@
 import Rule
 import DecTable
 import random
-''
+'DecTree'
 class DecTree:
 
     def __init__(self, dec_table):
