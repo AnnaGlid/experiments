@@ -4,7 +4,7 @@ import random
 
 class DecTable:
     global decision_sign
-    decision_sign = 'd'  # stands for decision, used in DaraFrame object header
+    decision_sign = 'd'  # stands for decision, used in DaTaFrame object header
 
     def __init__(self, attributes_number, rows_number, attributes_subset, table=None):
         self.d = decision_sign

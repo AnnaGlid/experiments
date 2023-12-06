@@ -1,4 +1,5 @@
 import SetS
+import os
 
 
 def iteration_number():
@@ -24,7 +25,7 @@ elif part == 2:
     m_values = [5, 10, 15, 20, 25]
 else:
     m_values = [20, 40, 60, 80, 100]
-file_path = 'D:\\BIBLIOTEKI\\dokumenty\\tutoring\\2 wersja algorytmow\\wyniki\\wyniki.txt'
+file_path = r'D:\repo_inz2\temp\wyniki.txt'
 
 
 n_values = [20]
@@ -47,6 +48,10 @@ for attributes_number in m_values:
 '''
 here goes writing results to file
 '''
+folder_path = file_path[:file_path.rfind('\\')]
+if not os.path.exists(folder_path):
+    os.makedirs( folder_path )
+
 with open(file_path, 'w') as f:
     for key, setS in results.items():
         m = key[0]
