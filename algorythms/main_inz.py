@@ -1,49 +1,46 @@
 import SetS
+from DecTable import DecTable
 import os
+import random
 
+default_tables_path = r'D:\BIBLIOTEKI\dokumenty\praca inż\tables\tables.txt'
 
-def iteration_number():
+def iterations_number(m_values: list, n_values: list, iters: int):
     number = 0
     for attributes_number in m_values:
         for agents_number in n_values:    
-            for k in range(number_of_iterations):
+            for k in range(iters):
                 number += 1
     return number
 
 def show_percent_done(now, all):
     print(' %.2f done'%(now/all*100))
         
-
-part = 1    # part 1, 2 and 3 to choose!!
-n_values = [10, 20, 30, 40, 50]     # number of agents
-number_of_iterations = 10      # number of Sets
 results = dict()    # {(m,n,k): SetS}, SetS include all required information
                     # max_num_of_trees, length (whole rule) for a, h1, h2
-if part == 1:
-    m_values = [10, 20, 30, 40, 50]     # number of attributes
-elif part == 2:
-    m_values = [5, 10, 15, 20, 25]
-else:
-    m_values = [20, 40, 60, 80, 100]
-file_path = r'D:\repo_inz2\temp\wyniki.txt'
 
 
-n_values = [20]
-m_values =[6]
-number_of_iterations = 10
-
-
-whole = iteration_number()
-i = 0
-
-for attributes_number in m_values:
-    all_attributes = ['f{}'.format(i) for i in range(attributes_number)]   # f1, f2, ... ,fm
-    for agents_number in n_values:    
-        for k in range(number_of_iterations):
-            set_s = SetS.SetS(all_attributes, attributes_number, agents_number, part)
-            results[(attributes_number, agents_number, k)] = set_s
-            i += 1
-            show_percent_done(i, whole)
+def generate_tables(m_values: list, n_values: list, iters: int, file_path: None|str, save: bool=False):
+    i = 0
+    dec_tables = []
+    whole = iterations_number(m_values=m_values, n_values=n_values, iters=iters)
+    file_path = file_path if file_path != None else default_tables_path
+    for attributes_number in m_values:
+        all_attributes = ['f{}'.format(i) for i in range(attributes_number)]   # f1, f2, ... ,fm
+        columns_number = attributes_number // 2 # DEPENDS
+        for agents_number in n_values:    
+            for k in range(iters):
+                dec_tables.append(DecTable(
+                    attributes_number=attributes_number,
+                    rows_number=len(m_values),
+                    attributes_subset=random.sample(all_attributes, columns_number)
+                ))
+                # set_s = SetS.SetS(all_attributes, attributes_number, agents_number)
+                # results[(attributes_number, agents_number, k)] = set_s
+                i += 1
+                show_percent_done(i, whole)
+    
+    return dec_tables
 
 '''
 here goes writing results to file

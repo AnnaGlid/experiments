@@ -68,5 +68,9 @@ class DecTable:
     def show(self):
         print(self.table)
 
+
+    def __str__(self):
+        return str(self.table)
+
     
 
