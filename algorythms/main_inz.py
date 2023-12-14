@@ -1,9 +1,11 @@
 from .SetS import SetS
 from .DecTable import DecTable
+from .. import consts
 import os
 import random
 
-default_tables_path = r'D:\BIBLIOTEKI\dokumenty\praca inż\tables\tables.txt'
+TABLES_PATH = consts.PATHS.tables_folder
+
 
 def iterations_number(m_values: list, n_values: list, iters: int):
     number = 0
@@ -24,7 +26,7 @@ def generate_tables(m_values: list, n_values: list, iters: int, file_path: None|
     i = 0
     dec_tables = []
     whole = iterations_number(m_values=m_values, n_values=n_values, iters=iters)
-    file_path = file_path if file_path != None else default_tables_path
+    file_path = file_path if file_path != None else TABLES_PATH
     for attributes_number in m_values:
         all_attributes = ['f{}'.format(i) for i in range(attributes_number)]   # f1, f2, ... ,fm
         columns_number = attributes_number // 2 # DEPENDS

@@ -2,17 +2,18 @@ class Parameters:
     ''' n - Agents number, m - attributes number '''
     m = [
             [10, 20, 30, 40, 50],
-            [5, 10, 15],
-            [5]
+            [10, 20, 30, 40],
+            [10, 20, 30],
+            [10, 20],
+            [10]
     ]
     n =  [
             [10, 20, 30, 40, 50],
-            [5, 10, 15],
-            [5]
+            [10, 20, 30, 40],
+            [10, 20, 30],
+            [10, 20],
+            [10]
     ]
     iters = [
-        1, 2, 5, 10
+        i+1 for i in range(10)
     ]
-
-class PATHS:
-    trees_folder = r'D:\BIBLIOTEKI\dokumenty\praca inż\tables'
