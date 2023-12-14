@@ -1,6 +1,6 @@
 import random
-import DecTree
-import DecTable
+from .DecTree import DecTree
+from .DecTable import DecTable
 
 class Agent:
     def __init__(self, all_attributes, attributes_number, part):
@@ -10,9 +10,9 @@ class Agent:
         self.rows_number = Agent.__number_of_rows(self)
 
         self.attributes_subset = random.sample(all_attributes, self.columns_number)
-        dec_table = DecTable.DecTable(self.columns_number, 
+        dec_table = DecTable(self.columns_number, 
             self.rows_number, self.attributes_subset)
-        self.dec_tree = DecTree.DecTree(dec_table)
+        self.dec_tree = DecTree(dec_table)
 
     def __number_of_columns(self):
         if self.part == 1:

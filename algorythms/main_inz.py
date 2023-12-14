@@ -1,5 +1,5 @@
-import SetS
-from DecTable import DecTable
+from .SetS import SetS
+from .DecTable import DecTable
 import os
 import random
 
@@ -45,6 +45,7 @@ def generate_tables(m_values: list, n_values: list, iters: int, file_path: None|
 '''
 here goes writing results to file
 '''
+file_path = "DEBUG"
 folder_path = file_path[:file_path.rfind('\\')]
 if not os.path.exists(folder_path):
     os.makedirs( folder_path )

@@ -1,7 +1,5 @@
-import Agent
-import AlgorythmA
-import Rule
-import Heuristics
+from .Agent import Agent
+from . import AlgorythmA, Rule, Heuristics
 
 class SetS:
     def __init__(self, all_attributes, attributes_number, agents_number, part):
@@ -29,7 +27,7 @@ class SetS:
     def __create_list_of_agents(self):
         agents_list = []
         for agent in range(self.agents_number):
-            agents_list.append(Agent.Agent(self.all_attributes, 
+            agents_list.append(Agent(self.all_attributes, 
                 self.attributes_number,  self.part))
         return agents_list
 

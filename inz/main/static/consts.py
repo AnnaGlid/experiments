@@ -13,3 +13,6 @@ class Parameters:
     iters = [
         1, 2, 5, 10
     ]
+
+class PATHS:
+    trees_folder = r'D:\BIBLIOTEKI\dokumenty\praca inż\tables'

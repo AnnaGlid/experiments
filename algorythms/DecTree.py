@@ -1,7 +1,6 @@
-import Rule
-import DecTable
+from .DecTable import DecTable
 import random
-'DecTree'
+
 class DecTree:
 
     def __init__(self, dec_table):
@@ -34,8 +33,8 @@ class DecTree:
             is_one = dec_table.table[random_attribute] == 1
             table_one = dec_table.table[is_one].drop(columns = [random_attribute])
             table_zero = dec_table.table[~ is_one].drop(columns = [random_attribute])
-            dec_table_one = DecTable.DecTable.table_to_dectable(table_one)
-            dec_table_zero = DecTable.DecTable.table_to_dectable(table_zero)
+            dec_table_one = DecTable.table_to_dectable(table_one)
+            dec_table_zero = DecTable.table_to_dectable(table_zero)
             rule_one = '{}{}={} '.format(rule, random_attribute, '1')
             rule_zero = '{}{}={} '.format(rule, random_attribute, '0')
             DecTree.__obtain_rules(self, dec_table_one, rule_one)

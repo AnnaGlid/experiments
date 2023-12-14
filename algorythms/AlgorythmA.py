@@ -1,5 +1,4 @@
-import Agent
-import Rule
+from . import Rule
 
 def calculate_each_rule(list_of_agents, list_of_rules):
     """

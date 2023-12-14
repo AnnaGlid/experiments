@@ -1,5 +1,5 @@
 from django import forms
-from .static.consts import Parameters
+from .static.consts import Parameters, PATHS
 
 def normalize_choices(choices: list)-> list:
     return [(choices.index(choice), str(choice)) for choice in choices]
@@ -35,4 +35,21 @@ class SetParametersForm(forms.Form):
         required=True,
         initial=5,
         label = 'Ilość zbiorów drzew decyzyjnych'
+    )
+
+    # file_path = forms.FilePathField(
+    #     path=PATHS.trees_folder,
+    #     allow_folders=False,
+    #     allow_files=True,
+    #     required=True,
+    #     label="Wybierz plik"
+    # )
+
+    file_path = forms.CharField(
+        max_length=200,
+        min_length=1,
+        strip=True,
+        required=True,
+        label="Wpisz ścieżkę pliku do zapisu",
+        initial=PATHS.trees_folder
     )

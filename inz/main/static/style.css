@@ -28,3 +28,13 @@ body{
     padding-bottom: 5%;
 }
 
+.hor-container{
+    display: flex;
+}
+
+.hor{
+    padding-left: 20px;
+    padding-right: 20px;
+    align-content: center;
+}
+

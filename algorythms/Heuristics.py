@@ -1,6 +1,4 @@
-import AlgorythmA
-import Agent
-import Rule
+from . import AlgorythmA, Rule
 
 class Heuristics:
     def __init__(self, rule_and_number):    
