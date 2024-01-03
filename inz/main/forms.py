@@ -1,5 +1,5 @@
 from django import forms
-from .static.consts import Parameters, PATHS
+from .static.consts import Parameters
 
 def normalize_choices(choices: list)-> list:
     return [(choices.index(choice), str(choice)) for choice in choices]
@@ -50,6 +50,5 @@ class SetParametersForm(forms.Form):
         min_length=1,
         strip=True,
         required=True,
-        label="Wpisz ścieżkę pliku do zapisu",
-        initial=PATHS.trees_folder
+        label="Wpisz ścieżkę pliku do zapisu"
     )

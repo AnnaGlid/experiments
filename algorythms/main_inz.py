@@ -1,6 +1,6 @@
 from .SetS import SetS
 from .DecTable import DecTable
-from .. import consts
+import consts
 import os
 import random
 

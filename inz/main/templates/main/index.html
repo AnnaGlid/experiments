@@ -1,20 +1,27 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <h1 class="title"> Generowanie reguł decyzyjnych ze zbioru drzew decyzyjnych </h1>
-    <div class="hor-container"> 
-        <div class="hor">
-            <div class="form-container">
+    <div class="seg-container"> 
+        <div class="seg">
+            <div class="subtitle">
+                WYGENERUJ TABLICE
+            </div>
+            <div class="seg-content form-container">
                 <form action="/get_values/" method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.as_div }}
                     <input type="submit" value="Generuj">            
                 </form>
             </div>
         </div>
-        <div class="hor">
-            <p>Wczytaj tablice:</p>
-            <a href="/">Tutaj będzie można wybrać plik</a>
+        <div class="seg">
+            <div class="subtitle">
+                WCZYTAJ TABLICE
+            </div>
+            <div class="seg-content">
+                <a href="/">Tutaj będzie można wybrać plik</a>
+                <p> TEST TEST </p>
+            </div>            
         </div>    
     </div>
 {% endblock %}
