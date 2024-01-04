@@ -7,10 +7,10 @@
                 WYGENERUJ TABLICE
             </div>
             <div class="seg-content form-container">
-                <form action="/get_values/" method="post">
+                <form action="/get_tables/" method="post">
                     {% csrf_token %}
                     {{ form.as_div }}
-                    <input type="submit" value="Generuj">            
+                    <input type="submit" class="btn" value="Generuj">            
                 </form>
             </div>
         </div>

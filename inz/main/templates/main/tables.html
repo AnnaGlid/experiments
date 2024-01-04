@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <div class="seg-container"> 
+        <div class="seg">
+            <div class="subtitle">
+                WYGENEROWANE TABLICE
+            </div>
+        </div>
+        <div class="seg">
+            {% autoescape off %}
+                {% for table in tables %}
+                <div class="table-container highlight">
+                    {{ table }}
+                </div>                    
+                {% endfor %}
+            {% endautoescape %}	
+        </div>    
+    </div>
+{% endblock %}

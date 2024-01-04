@@ -86,10 +86,7 @@ form {
     font-size: 16px;
     padding: 10px;
     width: 250px;
-    border: 1px solid rgb(65, 9, 91);
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    border: none;
     background: hsla(0, 0%, 0%, 0.39);
     color: white;
     outline: none;
@@ -100,8 +97,8 @@ form {
     padding: 0;
   }
   
-  .submit {
-    border: 1px solid rgba(10, 180, 180, 1);
+  .btn {
+    border: 1px solid rgb(0, 163, 174);
     background: rgba(20, 20, 20, .6);
     font-size: 18px;
     color: white;
@@ -109,9 +106,68 @@ form {
     padding: 10px 50px;
     cursor: pointer;
     transition: .4s;
-    &:hover {
-      background: rgba(20, 20, 20, .8);
-      padding: 10px 80px;
-    }
   }
 
+  .btn:hover{
+    background: rgba(64, 226, 255, 0.515);
+    width: 60%;
+  }
+
+  .highlight{
+    transition-duration: 1s;
+    transition-property: background-color;
+  }
+
+  .highlight:hover{
+    transition-duration: 1s;
+    transition-property: background-color;
+    background-color: rgba(236, 246, 255, 0.592);
+    border-radius: 4px;    
+  }
+
+  .table-container{
+    width: fit-content;
+    margin: auto;
+    padding:20px;
+  }
+
+  .label > *{
+    padding-left:10px;
+    margin:2px;
+  }
+
+  .label{
+    background-color: rgba(229, 243, 255, 0.766);
+    margin-bottom: 10px;
+    border-radius: 6px;
+    padding-top:5px;
+    padding-bottom: 5px;
+  }
+
+  table{
+    border:6px solid;    
+    border-color: rgba(60, 9, 80, 0.618);
+    border-radius: 4%;
+    padding:20px;
+  }
+
+  th, td{
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size:large;    
+  }
+
+  th{
+    background: rgba(14, 0, 35, 0.697);
+    color: white;
+  }
+
+  tr:nth-child(odd){
+    background-color: rgba(255, 255, 255, 0.911);
+    color:rgb(0, 6, 70)
+  }
+
+  tr:nth-child(even) {
+    background-color: hsla(0, 0%, 100%, 0.652);
+    color:rgb(0, 6, 70)
+}
