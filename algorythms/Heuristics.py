@@ -1,4 +1,7 @@
-from . import AlgorythmA, Rule
+try:
+    from . import AlgorythmA, Rule
+except:
+    import AlgorythmA, Rule
 
 class Heuristics:
     def __init__(self, rule_and_number):    

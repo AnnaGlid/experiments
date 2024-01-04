@@ -1,4 +1,7 @@
-from . import Rule
+try:
+    from . import Rule
+except:
+    import Rule
 
 def calculate_each_rule(list_of_agents, list_of_rules):
     """

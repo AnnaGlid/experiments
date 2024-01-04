@@ -1,5 +1,9 @@
-from .Agent import Agent
-from . import AlgorythmA, Rule, Heuristics
+try:
+    from .Agent import Agent
+    from . import AlgorythmA, Rule, Heuristics
+except:
+    from Agent import Agent
+    import AlgorythmA, Rule, Heuristics
 
 class SetS:
     def __init__(self, all_attributes, attributes_number, agents_number, part):

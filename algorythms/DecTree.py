@@ -1,4 +1,7 @@
-from .DecTable import DecTable
+try:
+    from .DecTable import DecTable
+except:
+    from DecTable import DecTable
 import random
 
 class DecTree:

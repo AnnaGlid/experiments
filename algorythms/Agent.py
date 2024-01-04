@@ -1,6 +1,10 @@
 import random
-from .DecTree import DecTree
-from .DecTable import DecTable
+try:
+    from .DecTree import DecTree
+    from .DecTable import DecTable
+except:
+    from DecTree import DecTree
+    from DecTable import DecTable
 
 class Agent:
     def __init__(self, all_attributes, attributes_number, part):
