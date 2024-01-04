@@ -14,6 +14,3 @@ class Parameters:
             [10, 20],
             [10]
     ]
-    iters = [
-        i+1 for i in range(10)
-    ]

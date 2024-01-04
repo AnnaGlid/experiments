@@ -1,10 +1,15 @@
-from .SetS import SetS
-from .DecTable import DecTable
-import consts
+try:
+    from .SetS import SetS
+    from .DecTable import DecTable
+except:
+    from SetS import SetS
+    from DecTable import DecTable
+
+# import consts
 import os
 import random
 
-TABLES_PATH = consts.PATHS.tables_folder
+# TABLES_PATH = consts.PATHS.tables_folder
 
 
 def iterations_number(m_values: list, n_values: list, iters: int):
@@ -22,11 +27,12 @@ results = dict()    # {(m,n,k): SetS}, SetS include all required information
                     # max_num_of_trees, length (whole rule) for a, h1, h2
 
 
-def generate_tables(m_values: list, n_values: list, iters: int, file_path: None|str, save: bool=False):
+def generate_tables(m_values: list, n_values: list, iters: int, file_path: None|str=None, save: bool=False):
     i = 0
     dec_tables = []
     whole = iterations_number(m_values=m_values, n_values=n_values, iters=iters)
-    file_path = file_path if file_path != None else TABLES_PATH
+    # if save:
+    #     file_path = file_path if file_path != None else TABLES_PATH
     for attributes_number in m_values:
         all_attributes = ['f{}'.format(i) for i in range(attributes_number)]   # f1, f2, ... ,fm
         columns_number = attributes_number // 2 # DEPENDS
@@ -34,7 +40,7 @@ def generate_tables(m_values: list, n_values: list, iters: int, file_path: None|
             for k in range(iters):
                 dec_tables.append(DecTable(
                     attributes_number=attributes_number,
-                    rows_number=len(m_values),
+                    rows_number=attributes_number,
                     attributes_subset=random.sample(all_attributes, columns_number)
                 ))
                 # set_s = SetS.SetS(all_attributes, attributes_number, agents_number)
@@ -86,3 +92,8 @@ with open(file_path, 'w') as f:
         print('Rule: ', setS.true_rules_h2[0])
         print('=================================================\n')
 
+# generate_tables(
+#     [5,10],
+#     [5, 10],
+#     5
+# )

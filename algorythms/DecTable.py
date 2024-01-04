@@ -59,7 +59,7 @@ class DecTable:
         """
         Each row contains only attributes values, without decision value.
         """
-        row = [random.choice(self.attribute_values) for i in range(self.attributes_number)]
+        row = [random.choice(self.attribute_values) for i in range(len(self.attributes_subset))]
         if row not in rows_list:
             return row
         else:

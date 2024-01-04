@@ -12,25 +12,15 @@ class SetParametersForm(forms.Form):
         required=False,
         label="Pula atrybutów tablicy decyzyjnej"
     )
-    # m_parameters_custom = forms.CharField(
-    #     min_length=1,
-    #     max_length=100,
-    #     required=False,
-    #     label="Inna pula atrybutów tablicy decyzyjnej"
-    # )
+
     n_parameters = forms.ChoiceField(
         choices=normalize_choices(Parameters.n),
         required=False,
         label="Ilość agentów"
     )
-    # n_parameters_custom = forms.CharField(
-    #     min_length=1,
-    #     max_length=100,
-    #     required=False,
-    #     label="Inna ilość agentów"
-    # )    
+
     iters_parameter = forms.IntegerField(
-        max_value=50,
+        max_value=20,
         min_value=1,
         required=True,
         initial=5,
@@ -45,10 +35,10 @@ class SetParametersForm(forms.Form):
     #     label="Wybierz plik"
     # )
 
-    file_path = forms.CharField(
-        max_length=200,
-        min_length=1,
-        strip=True,
-        required=True,
-        label="Wpisz ścieżkę pliku do zapisu"
-    )
+    # file_path = forms.CharField(
+    #     max_length=200,
+    #     min_length=1,
+    #     strip=True,
+    #     required=True,
+    #     label="Wpisz ścieżkę pliku do zapisu"
+    # )
