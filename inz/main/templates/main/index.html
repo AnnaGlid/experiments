@@ -1,18 +1,36 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
+    {% if info %}
+        <div class="info">{{ info }}</div>
+        <div class="options-container">
+            <a href="/delete-tables/">
+                <div class="btn option"> Usuń tablice </div>
+            </a>
+        </div>        
+    {% endif %}
     <div class="seg-container"> 
         <div class="seg">
             <div class="subtitle">
                 WYGENERUJ TABLICE
             </div>
             <div class="seg-content form-container">
-                <form action="/get_tables/" method="post">
+                <form action="/get-tables/" method="post">
                     {% csrf_token %}
                     {{ form.as_div }}
                     <input type="submit" class="btn" value="Generuj">            
                 </form>
             </div>
+            {% if info %}
+                <div class="options-container">
+                    <a href="/show-tables/">
+                        <div class="btn option"> Pokaż tablice </div>
+                    </a>
+                    <a href="/save-tables/">
+                        <div class="btn option"> Zapisz tablice do pliku csv </div>
+                    </a>                    
+                </div>
+            {% endif %}
         </div>
         <div class="seg">
             <div class="subtitle">

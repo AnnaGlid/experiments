@@ -1,39 +1,54 @@
 from django.shortcuts import render, redirect
+from django.http import StreamingHttpResponse
+from wsgiref.util import FileWrapper
 from .forms import *
 import sys
 sys.path.append('..')
 from algorythms import MainInz
 from .static import consts
+import mimetypes
+import os
 
-# Create your views here.
 
+all_tables = []
+FILE_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def index(response):
-    form = SetParametersForm()
+    # form = SetParametersForm()
+    form = SetParametersFormTables()
     return render(response, 'main/index.html', {'form': form})
 
 def get_tables(response):
     print(response.method)    
-    if response.method != 'POST':
-        return redirect(index)
-    m_index = response.POST.get('m_parameters')
-    n_index = response.POST.get('n_parameters')    
-    try:
-        print('Generowanie tablic')
-        tables = MainInz.generate_tables(
-            m_values=consts.Parameters.m[int(m_index)],
-            n_values=consts.Parameters.n[int(n_index)],
-            iters=int(response.POST.get('iters_parameter'))
-        )
-        print('Tablice wygenerowane.')
-    except Exception as ex:
-        print(f"Błąd przy generowaniu tablic: {ex}")
+    if response.method == 'POST':
+        tables_num = response.POST.get('tables_num')
+        rows_num = response.POST.get('rows_num')
+        attributes_num = response.POST.get('attributes_num')
+        try:
+            print('Generowanie tablic')
+            global all_tables
+            all_tables += MainInz.generate_n_tables(
+                tables_num=int(tables_num),
+                rows_num=int(rows_num),
+                attributes_num=int(attributes_num)
+            )
+            print('Tablice wygenerowane.')
+        except Exception as ex:
+            print(f"Błąd przy generowaniu tablic: {ex}")
 
-    # breakpoint()
+    form = SetParametersFormTables()
+    return render(response, 
+        'main/index.html',
+        {
+            'info':f'Tablice wygenerowane. Ilość wczytanych tablic: {len(all_tables)}',
+            'form': form
+        })   
         
+def show_tables(response):
     ''' Prepare html table code '''
     tables_html = []
-    for table in tables:
+    global all_tables
+    for table in all_tables:
         html_code = f'''
         <div class="label">
             <p>Liczba atrybutów: {len(table.attributes_subset)}</p>
@@ -58,7 +73,48 @@ def get_tables(response):
                             
     return render(response, 
         'main/tables.html',
-        {'tables':tables_html})
+        {'tables':tables_html})    
 
+def delete_tables(response):
+    global all_tables
+    all_tables = []
+    form = SetParametersFormTables()
+    return render(response, 
+        'main/index.html',
+        {
+            'info':f'Tablice zostały usunięte.',
+            'form': form
+        })       
 
-    
+def save_tables(response):
+    global all_tables
+    global FILE_BASE_DIR
+
+    filename = 'tables.csv'
+    filepath = FILE_BASE_DIR + '/Files/' + filename   
+
+    file_content = ''
+    for table in all_tables:
+        table_str = str(table)
+        for row in table_str.split('\n'):
+            file_content += ','.join(row.strip().split())
+            file_content += ',\n'
+    with open(filepath, 'w') as f:
+        f.write(file_content)
+
+    # breakpoint()
+    chunksize = 8192
+    response = StreamingHttpResponse(
+        FileWrapper(open(filepath, 'rb'), chunksize),
+        content_type='text/csv'
+    )
+    response['Content-Length'] = os.path.getsize(filepath)
+    response['Content-Disposition'] = f'Attachment;filename={filename}'
+    return response
+
+    return render(response, 
+        'main/index.html',
+        {
+            'info':f'Tablice zostały zapisane.',
+            # 'form': form
+        })           

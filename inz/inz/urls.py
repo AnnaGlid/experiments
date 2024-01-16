@@ -19,6 +19,9 @@ from main import views
 
 urlpatterns = [
     path('', views.index),
-    path('get_tables/', views.get_tables),
+    path('get-tables/', views.get_tables),
     path('admin/', admin.site.urls),
+    path('delete-tables/', views.delete_tables),
+    path('show-tables/', views.show_tables),
+    path('save-tables/', views.save_tables)
 ]
