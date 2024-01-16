@@ -46,9 +46,19 @@ def generate_tables(m_values: list, n_values: list, iters: int, file_path: None|
                 # set_s = SetS.SetS(all_attributes, attributes_number, agents_number)
                 # results[(attributes_number, agents_number, k)] = set_s
                 i += 1
-                show_percent_done(i, whole)
-    
+                show_percent_done(i, whole)    
     return dec_tables
+
+
+def generate_n_tables(tables_num: int, attributes_num: int, rows_num: int) -> list[DecTable]:
+    tables = []
+    for j in range(tables_num):
+        tables.append(
+            DecTable(attributes_number=attributes_num,
+                     rows_number=rows_num,
+                     attributes_subset=[f'f{i}' for i in range(1, attributes_num+1)])
+            )
+    return tables
 
 '''
 here goes writing results to file
