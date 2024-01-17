@@ -50,7 +50,7 @@ body{
 .seg-content{
     display: block;
     margin: auto;
-    width: 50%;
+    width: 70%;
     padding: 30px;
     font-size: large;
     color: rgb(33, 36, 69);
@@ -65,27 +65,28 @@ form > div > *{
 
 form > input {
     display: block;
-    width: 50%;
+    width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px;
 }
 
-
 form {
-    width: 70%;
+    width: 50%;
     display: block;
     margin: auto;
     padding: 20px 0;
     background: rgba(0, 0, 0, 0.17);
-
   }
-  
+
+  form.load-files{
+    width: 80%;   
+  }
+    
   input, select {
     margin: 15px 0;
     font-size: 16px;
     padding: 10px;
-    width: 250px;
+    width: fit;
     border: none;
     background: hsla(0, 0%, 0%, 0.39);
     color: white;
@@ -110,7 +111,8 @@ form {
 
   .btn:hover{
     background: rgba(64, 226, 255, 0.515);
-    width: 60%;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .highlight{
@@ -173,7 +175,7 @@ form {
 }
 
   .info{
-    background-color: rgba(255, 229, 116, 0.852);
+    background-color: rgba(255, 255, 255, 0.589);
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
@@ -183,6 +185,9 @@ form {
     padding-right: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
+    border-width: 4px;
+    border-color: rgb(66, 101, 215);
+    border-style: outset;
   }
 
   .option{

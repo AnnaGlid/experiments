@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('delete-tables/', views.delete_tables),
     path('show-tables/', views.show_tables),
-    path('save-tables/', views.save_tables)
+    path('save-tables/', views.save_tables),
+    path('load-tables/', views.load_tables)
 ]

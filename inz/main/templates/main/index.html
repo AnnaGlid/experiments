@@ -7,6 +7,12 @@
             <a href="/delete-tables/">
                 <div class="btn option"> Usuń tablice </div>
             </a>
+            <a href="/show-tables/">
+                <div class="btn option"> Pokaż tablice </div>
+            </a>
+            <a href="/save-tables/">
+                <div class="btn option"> Zapisz tablice do pliku csv </div>
+            </a>                
         </div>        
     {% endif %}
     <div class="seg-container"> 
@@ -21,24 +27,19 @@
                     <input type="submit" class="btn" value="Generuj">            
                 </form>
             </div>
-            {% if info %}
-                <div class="options-container">
-                    <a href="/show-tables/">
-                        <div class="btn option"> Pokaż tablice </div>
-                    </a>
-                    <a href="/save-tables/">
-                        <div class="btn option"> Zapisz tablice do pliku csv </div>
-                    </a>                    
-                </div>
-            {% endif %}
         </div>
         <div class="seg">
             <div class="subtitle">
-                WCZYTAJ TABLICE
+                WCZYTAJ TABLICE Z PLIKU CSV
             </div>
             <div class="seg-content">
-                <a href="/">Tutaj będzie można wybrać plik</a>
-                <p> TEST TEST </p>
+                <div class="seg-content form-container">
+                    <form enctype="multipart/form-data" class="load-files" action="/load-tables/" method="post" name="form">
+                        {% csrf_token %}
+                        {{ form_load.as_div }}
+                        <input type="submit" class="btn" value="Wczytaj" name="submit_it">            
+                    </form>
+                </div>                  
             </div>            
         </div>    
     </div>

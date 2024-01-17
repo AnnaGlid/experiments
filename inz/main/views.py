@@ -5,6 +5,7 @@ from .forms import *
 import sys
 sys.path.append('..')
 from algorythms import MainInz
+from algorythms.DecTable import DecTable
 from .static import consts
 import mimetypes
 import os
@@ -13,10 +14,14 @@ import os
 all_tables = []
 FILE_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-def index(response):
-    # form = SetParametersForm()
+def index(response, info: str|None=None):
+    global all_tables
     form = SetParametersFormTables()
-    return render(response, 'main/index.html', {'form': form})
+    form_load = UploadFileForm()
+    if info:
+        return render(response, 'main/index.html', {'form': form, 'form_load': form_load, 'info': info})
+    else:
+        return render(response, 'main/index.html', {'form': form, 'form_load': form_load, 'info': f'Suma wczytanych tablic: {len(all_tables)}'})
 
 def get_tables(response):
     print(response.method)    
@@ -37,11 +42,13 @@ def get_tables(response):
             print(f"Błąd przy generowaniu tablic: {ex}")
 
     form = SetParametersFormTables()
+    form_load = UploadFileForm()
     return render(response, 
         'main/index.html',
         {
-            'info':f'Tablice wygenerowane. Ilość wczytanych tablic: {len(all_tables)}',
-            'form': form
+            'info':f'Tablice wygenerowane. Suma wczytanych tablic: {len(all_tables)}',
+            'form': form,
+            'form_load': form_load
         })   
         
 def show_tables(response):
@@ -79,11 +86,13 @@ def delete_tables(response):
     global all_tables
     all_tables = []
     form = SetParametersFormTables()
+    form_load = UploadFileForm()
     return render(response, 
         'main/index.html',
         {
             'info':f'Tablice zostały usunięte.',
-            'form': form
+            'form': form,
+            'form_load': form_load
         })       
 
 def save_tables(response):
@@ -95,7 +104,7 @@ def save_tables(response):
 
     file_content = ''
     for table in all_tables:
-        table_str = str(table)
+        table_str = table.get_table_str(with_index=False)
         for row in table_str.split('\n'):
             file_content += ','.join(row.strip().split())
             file_content += ',\n'
@@ -112,9 +121,36 @@ def save_tables(response):
     response['Content-Disposition'] = f'Attachment;filename={filename}'
     return response
 
-    return render(response, 
-        'main/index.html',
-        {
-            'info':f'Tablice zostały zapisane.',
-            # 'form': form
-        })           
+def load_tables(request):
+    global all_tables
+    filename = 'tables_uploaded.csv'
+    filepath = FILE_BASE_DIR + '/Files/' + filename   
+    if request.method == "POST":
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES.get('file', None)
+            if file:
+                with open(filepath, "wb+") as destination:
+                    for chunk in file.chunks():
+                        destination.write(chunk)     
+                with open(filepath, 'r') as f:
+                    file_content = f.read()
+                new_tables_csv =[]
+                new_table = ''
+                for line in file_content.split('\n'):
+                    if any([sign.isalpha() for sign in line]):
+                        # is header
+                        new_tables_csv.append(new_table.strip()) if new_table else None
+                        new_table = line + '\n'
+                    else:
+                        new_table += f'{line}\n'   
+                new_tables_csv.append(new_table.strip())             
+                for table in new_tables_csv:
+                    dectable = DecTable.csv_table_to_dectable(table)
+                    all_tables.append(dectable)
+                return index(response=request, info=f"Tablice wczytane. Suma wczytanych tablic: {len(all_tables)}")
+            else:
+                return index(response=request, info="Wczytanie pliku nie powiodło się")
+    else:
+        return redirect('/')
+    

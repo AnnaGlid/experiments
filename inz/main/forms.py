@@ -31,5 +31,4 @@ class SetParametersFormTables(forms.Form):
     )    
 
 class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file = forms.FileField(initial='tables.csv', allow_empty_file=True)    
+    file = forms.FileField(required=True, label='Plik')    

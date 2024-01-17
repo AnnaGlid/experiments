@@ -19,6 +19,24 @@ class DecTable:
             self.table = table
 
     @staticmethod
+    def csv_table_to_dectable(csv_content: str):
+        ''' Turns file like "f1,f2,f3\n0,1,2\n2,4,3" to DecTable'''
+        lines = csv_content.split('\n')
+        for i in range(len(lines)):
+            if lines[i].startswith(','):
+                lines[i] = lines[i][1:]
+            if lines[i].endswith(','):
+                lines[i] = lines[i][:-1]
+                
+        header_line = next(filter(lambda x: any([sign.isalpha() for sign in x]), lines))
+        lines.remove(header_line)
+        table = pd.DataFrame(
+            columns = header_line.strip().split(','),
+            data=[line.strip().split(',') for line in lines]
+        )
+        return DecTable.table_to_dectable(table=table)
+
+    @staticmethod
     def table_to_dectable(table):
         attributes_number = len(table.columns) - 1  # minus decision
         rows_number = len(table)
@@ -71,6 +89,9 @@ class DecTable:
 
     def __str__(self):
         return str(self.table)
+    
+    def get_table_str(self, with_index=True):
+        return self.table.to_string(index=with_index)
 
     
 
