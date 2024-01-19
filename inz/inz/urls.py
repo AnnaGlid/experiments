@@ -24,5 +24,8 @@ urlpatterns = [
     path('delete-tables/', views.delete_tables),
     path('show-tables/', views.show_tables),
     path('save-tables/', views.save_tables),
-    path('load-tables/', views.load_tables)
+    path('load-tables/', views.load_tables),
+    path('get-trees/', views.get_trees),
+    path('save-trees/', views.save_trees),
+    path('show-trees/', views.show_trees)
 ]

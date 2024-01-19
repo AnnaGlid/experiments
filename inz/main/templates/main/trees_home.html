@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    {% if info %}
+        <div class="info">{{ info }}</div>
+    {% endif %}
+        <div class="options-container">
+            <a href="/get-tables/">
+                <div class="btn option"> Powrót </div>
+            </a>
+            <a href="/show-trees/">
+                <div class="btn option"> Pokaż drzewa decyzyjne </div>
+            </a>
+            <a href="/save-trees/">
+                <div class="btn option"> Zapisz drzewa w postaci reguł </div>
+            </a>     
+        </div>        
+{% endblock %}

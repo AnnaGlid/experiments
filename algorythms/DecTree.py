@@ -15,8 +15,9 @@ class DecTree:
         if  dec_table.table[dec_table.d].nunique()==0:
             # first case:
             # if there are no more rows left
-            # i don't know what do to 
-            rule += '{}={}'.format(dec_table.d, '?')
+            # get most popular decision
+            most_popular_decision = self.dec_table.table[self.dec_table.d].value_counts().idxmax()
+            rule += '{}={}'.format(dec_table.d, most_popular_decision)
             if rule.count("=") > 1:
                 self.rules.append(rule)
             return
@@ -32,6 +33,8 @@ class DecTree:
             # third case:
             # there are two or more distinct decisions in the subtable
             # new random attribute is drawn and the table is divided
+            if len(dec_table.attributes_subset) == 0:
+                breakpoint()
             random_attribute = random.choice(list(dec_table.attributes_subset))
             is_one = dec_table.table[random_attribute] == 1
             table_one = dec_table.table[is_one].drop(columns = [random_attribute])

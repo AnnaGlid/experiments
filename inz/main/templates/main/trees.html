@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <div class="options-container">
+        <a href="/">
+            <div class="btn option">POWRÓT</div>
+        </a>
+    </div>
+    <div class="seg-container"> 
+        <div class="seg">
+            <div class="subtitle">
+                DRZEWA DECYZYJNE
+            </div>
+        </div>
+        <div class="seg">
+            {% autoescape off %}
+                {% for tree_name in trees %}
+                <div class="table-container highlight">
+                    <img src={{ tree_name }}>
+                </div>                    
+                {% endfor %}
+            {% endautoescape %}	
+        </div>    
+    </div>
+{% endblock %}

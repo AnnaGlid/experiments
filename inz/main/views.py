@@ -6,12 +6,14 @@ import sys
 sys.path.append('..')
 from algorythms import MainInz
 from algorythms.DecTable import DecTable
+from algorythms.DecTree import DecTree
 from .static import consts
 import mimetypes
 import os
 
 
 all_tables = []
+all_tables_and_trees = []
 FILE_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def index(response, info: str|None=None):
@@ -25,7 +27,9 @@ def index(response, info: str|None=None):
 
 def get_tables(response):
     print(response.method)    
-    if response.method == 'POST':
+    form = SetParametersFormTables()
+    form_load = UploadFileForm()
+    if response.method == 'POST':        
         tables_num = response.POST.get('tables_num')
         rows_num = response.POST.get('rows_num')
         attributes_num = response.POST.get('attributes_num')
@@ -38,15 +42,19 @@ def get_tables(response):
                 attributes_num=int(attributes_num)
             )
             print('Tablice wygenerowane.')
+        except RecursionError:
+            info = 'Błąd przy generowaniu - dobierz inne parametry tablic.'
+            return render(response, 'main/index.html', {'info':info,'form': form, 'form_load': form_load})               
         except Exception as ex:
-            print(f"Błąd przy generowaniu tablic: {ex}")
+            print(ex)
+            info = 'Błąd przy generowaniu.'
+            return render(response, 'main/index.html', {info:info,'form': form,'form_load': form_load})              
 
-    form = SetParametersFormTables()
-    form_load = UploadFileForm()
+    info = f'Tablice wygenerowane. Suma wczytanych tablic: {len(all_tables)}' if len(all_tables) else 'Nie wczytano tablic.'
     return render(response, 
         'main/index.html',
         {
-            'info':f'Tablice wygenerowane. Suma wczytanych tablic: {len(all_tables)}',
+            'info':info,
             'form': form,
             'form_load': form_load
         })   
@@ -154,3 +162,43 @@ def load_tables(request):
     else:
         return redirect('/')
     
+def get_trees(response):
+    global all_tables
+    global all_tables_and_trees
+    all_tables_and_trees = []
+    if not len(all_tables):
+        return render(response, 'main/index.html', 
+               {'form': SetParametersFormTables(), 
+                'form_load': UploadFileForm(), 
+                'info': f'Nie wczytano tablic!'
+                })
+    for table in all_tables:
+        all_tables_and_trees.append({table: DecTree(table)})
+    return render(response, 'main/trees_home.html',{})
+    
+def save_trees(response):    
+    file_content = ''
+    global all_tables_and_trees
+    for idx, bundle in enumerate(all_tables_and_trees):
+        table, tree = list(bundle.items())[0]
+        file_content += f'Tree {idx}\n'
+        for rule in tree.rules:
+            file_content += f'{rule}\n'
+        global FILE_BASE_DIR
+
+    filename = 'trees.txt'
+    filepath = FILE_BASE_DIR + '/Files/' + filename   
+    with open(filepath, 'w') as f:
+        f.write(file_content)    
+    # breakpoint()
+    chunksize = 8192
+    response = StreamingHttpResponse(
+        FileWrapper(open(filepath, 'rb'), chunksize),
+        content_type='text/plain'
+    )
+    response['Content-Length'] = os.path.getsize(filepath)
+    response['Content-Disposition'] = f'Attachment;filename={filename}'
+    return response
+
+def show_trees(response):
+    return render(response, 'main/trees.html', {'trees': ['1.jpg', '2.jpg', '3.jpg']})
