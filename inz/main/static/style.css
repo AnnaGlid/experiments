@@ -32,6 +32,7 @@ body{
     background: linear-gradient(0deg, rgba(255,255,255,1) 14%, rgba(222,226,254,1) 67%, rgba(197,202,255,1) 100%); 
     padding-top:10px;
     padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .title h1{
@@ -44,6 +45,7 @@ body{
     color: rgb(45, 47, 74);
     background-color: rgba(255, 255, 255, 0.6);
     text-align: center;
+    margin-top: 40px;
 
 }
 
@@ -214,4 +216,36 @@ form {
     background: rgba(255, 223, 63, 0.542);
   }
 
+  .summary-container{
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-style: dotted;
+  }
+
+  .summary{
+    background-color: rgba(137, 43, 226, 0.208);
+    padding: 20px;
+  }
+
+  .summary-label{
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.218);
+    text-align: center;
+  }
+
+  .summary-row{
+    display: flex;
+    vertical-align: bottom;
+    margin-top: 5px;
+    padding:3px;
+    background-color: rgba(240, 248, 255, 0.511);
+  }
+  .summary-row > div{
+    width: 50%;
+    align-self: flex-end;
+    padding: 5px;
+  }
   

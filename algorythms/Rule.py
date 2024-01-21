@@ -1,4 +1,5 @@
 d = 'd'
+from pandas import DataFrame
 
 def is_rule_true(rule_a, rule_b):
     if decision(rule_a) != decision(rule_b):
@@ -105,7 +106,22 @@ def most_common_attribute(list_of_rules, created_rule):
                 max_num = attributes_num_dict[attribute]
                 max_attribute = attribute
     return max_attribute
+
+def calculate_support_for_table(table: DataFrame, rule: str)-> int:
+    descriptors = rule.split(' ')
+    for descriptor in descriptors:
+        attribute, value = descriptor.split('=')
+        if (len(table)>0) and (attribute in table.columns):
+            conditions = (table[attribute]) == int(value)
+            table = table[conditions]
+    return len(table)
             
+
+def calculate_support_for_tables(tables: list[DataFrame], rule: str)-> int:
+    support = 0
+    for table in tables:
+        support += calculate_support_for_table(table, rule)
+    return support
 
 
 

@@ -14,6 +14,8 @@ import os
 
 all_tables = []
 all_tables_and_trees = []
+parameters_a = None
+parameters_h = None
 FILE_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def index(response, info: str|None=None):
@@ -26,6 +28,10 @@ def index(response, info: str|None=None):
         return render(response, 'main/index.html', {'form': form, 'form_load': form_load, 'info': f'Suma wczytanych tablic: {len(all_tables)}'})
 
 def get_tables(response):
+    global parameters_a
+    global parameters_h
+    parameters_a = None
+    parameters_h = None    
     print(response.method)    
     form = SetParametersFormTables()
     form_load = UploadFileForm()
@@ -174,6 +180,9 @@ def get_trees(response):
                 })
     for table in all_tables:
         all_tables_and_trees.append({table: DecTree(table)})
+    return redirect('/trees-home/')
+
+def trees_home(response):
     return render(response, 'main/trees_home.html',{})
     
 def save_trees(response):    
@@ -202,7 +211,7 @@ def save_trees(response):
 
 def show_trees(response):
     filenames = ['1.jpg', '2.jpg', '3.jpg']
-    return render(response, 'main/trees.html', {'trees': ['../inz/Files/' + filename for filename in filenames]})
+    return render(response, 'main/trees.html', {'trees': filenames})
 
 def get_tree_list():
     global all_tables_and_trees
@@ -212,17 +221,74 @@ def get_tree_list():
         trees.append(tree)
     return trees
 
-def a(response):
-    global all_tables_and_trees
-    max_nr_trees, rules_a = MainInz.algorythm_a(get_tree_list())
+def get_rules_html(rules_info: dict)-> str:
+    html_code = '''
+        <div class="subtitle">
+            <p> Zbiór reguł </p>
+        </div>    
+        <table>
+            <tr>
+                <th> Reguła </th>
+                <th> Długość reguły </th>
+                <th> Wsparcie reguły </th>
+            </tr>
+    '''
+    for rule_info in rules_info:
+        rule = rule_info['rule']
+        length = rule_info['length']
+        support = rule_info['support']
+        html_code += f'''
+            <tr>
+                <td> {rule} </td>
+                <td> {length} </td>
+                <td> {support} </td>
+            </tr>
+        '''
+    html_code += '</table>'
+    return html_code
+
+def prepare_algorythms(response, rules: list[str], tables_df: list, max_nr_trees: int)->dict:
+    rules_info = []
+    if not len(rules):
+        return render(
+            response,
+            'main/trees_home.html',
+            {'info': 'Wystąpił błąd'}
+        )    
+    for rule in rules:
+        length = rule.count('=') - 1
+        support = MainInz.calculate_support(tables=tables_df, rule=rule)
+        rules_info.append({
+            'rule': rule,
+            'length': length,
+            'support': support
+        })
     parameters = {
-        'rules': rules_a, 
+        'rules_table': get_rules_html(rules_info), 
         'max_nr': max_nr_trees, 
         'algorythm': 'A',
-        'rules_count': len(rules_a),
-        'avg_length': sum([rule.count('=')-1 for rule in rules_a]) / len(rules_a)
-    }
-    return render(response, 'main/rules.html', parameters)
+        'rules_count': len(rules),
+        'avg_length': round(sum([rule.count('=')-1 for rule in rules]) / len(rules), 2),
+        'avg_support': round(sum([rule['support'] for rule in rules_info]) / len(rules_info), 2)
+    }    
+    return parameters
+
+def a(response):
+    global all_tables_and_trees
+    global all_tables
+    global parameters_a
+    if parameters_a is None:
+        tables = [dectable.table for dectable in all_tables]
+        max_nr_trees, rules_a = MainInz.algorythm_a(get_tree_list())
+        parameters_a = prepare_algorythms(response, rules_a, tables, max_nr_trees)
+    return render(response, 'main/rules.html', parameters_a)
 
 def h(response):
-    pass
+    global all_tables_and_trees
+    global all_tables
+    global parameters_h
+    if parameters_h is None:
+        tables = [dectable.table for dectable in all_tables]
+        max_nr_trees, rules_h = MainInz.heuristic1(get_tree_list())
+        parameters_h = prepare_algorythms(response, rules_h, tables, max_nr_trees)
+    return render(response, 'main/rules.html', parameters_h)

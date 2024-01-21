@@ -2,10 +2,14 @@ try:
     from .DecTable import DecTable
     from .DecTree import DecTree
     from . import AlgorythmA
+    from . import Rule
+    from .Heuristics import Heuristics
 except:
     from DecTable import DecTable
     from DecTree import DecTree
     import AlgorythmA
+    import Rule
+    from Heuristics import Heuristics
 
 
 # import consts
@@ -67,6 +71,20 @@ def algorythm_a(list_of_trees: list[DecTree])->tuple[int, list]:
     rule_and_number = AlgorythmA.calculate_each_rule(list_of_rules=all_rules, list_of_trees=list_of_trees)
     return AlgorythmA.algorythm_a(rule_and_number=rule_and_number)
     
+def calculate_support(tables: list, rule: str)-> int:
+    return Rule.calculate_support_for_tables(tables=tables, rule=rule)
+
+def heuristic1(list_of_trees: list[DecTree]):
+    all_rules = []
+    for tree in list_of_trees:
+        all_rules.extend(tree.rules)
+    rule_and_number = AlgorythmA.calculate_each_rule(list_of_rules=all_rules, list_of_trees=list_of_trees)
+    heu = Heuristics(rule_and_number)
+    rules_h =  heu.heuristic1()
+    rule_and_number_h = AlgorythmA.calculate_each_rule(list_of_rules=rules_h, list_of_trees=list_of_trees)
+    return AlgorythmA.algorythm_a(rule_and_number=rule_and_number_h)
+
+
 
 #region old
 '''

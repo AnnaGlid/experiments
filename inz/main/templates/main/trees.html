@@ -1,5 +1,5 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 {% block content %}
     <div class="options-container">
         <a href="/">
@@ -13,13 +13,12 @@
             </div>
         </div>
         <div class="seg">
-            {% autoescape off %}
                 {% for tree_name in trees %}
                 <div class="table-container highlight">
-                    <img src={{ tree_name }} label="decision tree">
+                    <img src="{% static 'imgs/'|add:tree_name %}" >
+                   
                 </div>                    
                 {% endfor %}
-            {% endautoescape %}	
         </div>    
     </div>
 {% endblock %}

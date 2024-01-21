@@ -2,24 +2,46 @@
 
 {% block content %}
     <div class="options-container">
-        <a href="/get-trees/">
+        <a href="/trees-home/">
             <div class="btn option">POWRÓT</div>
         </a>
     </div>
     <div class="seg-container"> 
         <div class="seg">
             <div class="subtitle">
-                REGUŁY PRAWDZIWE DLA MAKSYMALNEJ LICZBY DRZEW WYZNACZONE ZA POMOCĄ ALGORYTMU {{ algorythm }}
+                Reguły prawdziwe dla maksymalnej liczby drzew wyznaczone za pomocą algorytmu {{ algorythm }}
             </div>
         </div>
         <div class="seg">
             {% autoescape off %}
-                {% for rule in rules %}
-                <div class="table-container highlight">
-                    {{ rule }}
-                </div>                    
-                {% endfor %}
+            <div class="table-container">
+                {{ rules_table }}
+            </div>          
             {% endautoescape %}	
         </div>    
+        <div class="seg">
+            <div class="summary-container">
+                <div class="summary highlight">
+                    <div class="summary-label"> <b>Statystyka</b></div>
+                    <div class="summary-row">
+                        <div>Liczba reguł:</div>
+                        <div><b> {{ rules_count }} </b></div>
+                    </div>
+                    <div class="summary-row">
+                        <div>Maksymalna liczba drzew, dla których reguła jest prawdziwa:</div>
+                        <div><b> {{ max_nr }} </b></div>
+                    </div>
+                    <div class="summary-row">
+                        <div>Średnia długość reguł:</div>
+                        <div><b> {{ avg_length }} </b></div>
+                    </div>
+                    <div class="summary-row">
+                        <div>Średnie wsparcie:</div>
+                        <div><b> {{ avg_support }} </b></div>
+                    </div>            
+                </div>    
+    
+            </div>
+        </div>
     </div>
 {% endblock %}
