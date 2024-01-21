@@ -27,5 +27,7 @@ urlpatterns = [
     path('load-tables/', views.load_tables),
     path('get-trees/', views.get_trees),
     path('save-trees/', views.save_trees),
-    path('show-trees/', views.show_trees)
+    path('show-trees/', views.show_trees),
+    path('a/', views.a),
+    path('h/', views.h)
 ]

@@ -1,15 +1,16 @@
-try:
-    from .SetS import SetS
+try:    
     from .DecTable import DecTable
+    from .DecTree import DecTree
+    from . import AlgorythmA
 except:
-    from SetS import SetS
     from DecTable import DecTable
+    from DecTree import DecTree
+    import AlgorythmA
+
 
 # import consts
 import os
 import random
-
-# TABLES_PATH = consts.PATHS.tables_folder
 
 
 def iterations_number(m_values: list, n_values: list, iters: int):
@@ -49,7 +50,6 @@ def generate_tables(m_values: list, n_values: list, iters: int, file_path: None|
                 show_percent_done(i, whole)    
     return dec_tables
 
-
 def generate_n_tables(tables_num: int, attributes_num: int, rows_num: int) -> list[DecTable]:
     tables = []
     for j in range(tables_num):
@@ -60,6 +60,15 @@ def generate_n_tables(tables_num: int, attributes_num: int, rows_num: int) -> li
             )
     return tables
 
+def algorythm_a(list_of_trees: list[DecTree])->tuple[int, list]:
+    all_rules = []
+    for tree in list_of_trees:
+        all_rules.extend(tree.rules)
+    rule_and_number = AlgorythmA.calculate_each_rule(list_of_rules=all_rules, list_of_trees=list_of_trees)
+    return AlgorythmA.algorythm_a(rule_and_number=rule_and_number)
+    
+
+#region old
 '''
 here goes writing results to file
 '''
@@ -107,3 +116,5 @@ with open(file_path, 'w') as f:
 #     [5, 10],
 #     5
 # )
+        
+#endregion

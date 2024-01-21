@@ -201,4 +201,28 @@ def save_trees(response):
     return response
 
 def show_trees(response):
-    return render(response, 'main/trees.html', {'trees': ['1.jpg', '2.jpg', '3.jpg']})
+    filenames = ['1.jpg', '2.jpg', '3.jpg']
+    return render(response, 'main/trees.html', {'trees': ['../inz/Files/' + filename for filename in filenames]})
+
+def get_tree_list():
+    global all_tables_and_trees
+    trees = []
+    for bundle in all_tables_and_trees:
+        tree = list(bundle.values())[0]
+        trees.append(tree)
+    return trees
+
+def a(response):
+    global all_tables_and_trees
+    max_nr_trees, rules_a = MainInz.algorythm_a(get_tree_list())
+    parameters = {
+        'rules': rules_a, 
+        'max_nr': max_nr_trees, 
+        'algorythm': 'A',
+        'rules_count': len(rules_a),
+        'avg_length': sum([rule.count('=')-1 for rule in rules_a]) / len(rules_a)
+    }
+    return render(response, 'main/rules.html', parameters)
+
+def h(response):
+    pass

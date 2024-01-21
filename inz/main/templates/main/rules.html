@@ -2,21 +2,21 @@
 
 {% block content %}
     <div class="options-container">
-        <a href="/">
+        <a href="/get-trees/">
             <div class="btn option">POWRÓT</div>
         </a>
     </div>
     <div class="seg-container"> 
         <div class="seg">
             <div class="subtitle">
-                DRZEWA DECYZYJNE
+                REGUŁY PRAWDZIWE DLA MAKSYMALNEJ LICZBY DRZEW WYZNACZONE ZA POMOCĄ ALGORYTMU {{ algorythm }}
             </div>
         </div>
         <div class="seg">
             {% autoescape off %}
-                {% for tree_name in trees %}
+                {% for rule in rules %}
                 <div class="table-container highlight">
-                    <img src={{ tree_name }} label="decision tree">
+                    {{ rule }}
                 </div>                    
                 {% endfor %}
             {% endautoescape %}	
