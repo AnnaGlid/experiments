@@ -4,12 +4,14 @@ try:
     from . import AlgorythmA
     from . import Rule
     from .Heuristics import Heuristics
+    from .TreesVis import TreeVis
 except:
     from DecTable import DecTable
     from DecTree import DecTree
     import AlgorythmA
     import Rule
     from Heuristics import Heuristics
+    from TreesVis import TreeVis
 
 
 # import consts
@@ -84,6 +86,14 @@ def heuristic1(list_of_trees: list[DecTree]):
     rule_and_number_h = AlgorythmA.calculate_each_rule(list_of_rules=rules_h, list_of_trees=list_of_trees)
     return AlgorythmA.algorythm_a(rule_and_number=rule_and_number_h)
 
+def save_trees_to_file(list_of_trees: list[DecTree], folder_path: str):
+    ''' Save each tree to png (visualisation) as filenames "1.png", "2.png", etc'''
+    folder_path = f'{folder_path}/' if not folder_path.endswith('/') else folder_path
+    for idx, tree in enumerate(list_of_trees):
+        rules = tree.rules
+        vis = TreeVis(rules, 'd')
+        vis.construct_tree()
+        vis.draw(show=False, save=True, path=f'{folder_path}{idx+1}.png')
 
 
 #region old

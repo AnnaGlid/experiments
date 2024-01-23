@@ -16,6 +16,7 @@ all_tables = []
 all_tables_and_trees = []
 parameters_a = None
 parameters_h = None
+trees_visualised = False
 FILE_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def index(response, info: str|None=None):
@@ -30,6 +31,8 @@ def index(response, info: str|None=None):
 def get_tables(response):
     global parameters_a
     global parameters_h
+    global trees_visualised
+    trees_visualised = False
     parameters_a = None
     parameters_h = None    
     print(response.method)    
@@ -171,6 +174,8 @@ def load_tables(request):
 def get_trees(response):
     global all_tables
     global all_tables_and_trees
+    global trees_visualised
+    trees_visualised = False
     all_tables_and_trees = []
     if not len(all_tables):
         return render(response, 'main/index.html', 
@@ -210,7 +215,12 @@ def save_trees(response):
     return response
 
 def show_trees(response):
-    filenames = ['1.jpg', '2.jpg', '3.jpg']
+    global trees_visualised
+    trees = get_tree_list()
+    filenames = [f'{i+1}.png' for i in range(len(trees))]
+    if not trees_visualised:        
+        MainInz.save_trees_to_file(trees, 'main\\static\\imgs\\')        
+        trees_visualised = True
     return render(response, 'main/trees.html', {'trees': filenames})
 
 def get_tree_list():
