@@ -42,7 +42,7 @@ class DecTree:
             dec_table_one = DecTable.table_to_dectable(table_one)
             dec_table_zero = DecTable.table_to_dectable(table_zero)
             rule_one = '{}{}={} '.format(rule, random_attribute, '1')
-            rule_zero = '{}{}={} '.format(rule, random_attribute, '0')
+            rule_zero = '{}{}={} '.format(rule, random_attribute, '0')            
             DecTree.__obtain_rules(self, dec_table_one, rule_one)
             DecTree.__obtain_rules(self, dec_table_zero, rule_zero)
 

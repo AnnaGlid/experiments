@@ -30,9 +30,14 @@ class DecTable:
                 
         header_line = next(filter(lambda x: any([sign.isalpha() for sign in x]), lines))
         lines.remove(header_line)
+        data = []
+        for line in lines:
+            elements = [int(el) if el.isnumeric() else el 
+                        for el in line.split(',')]
+            data.append(elements)        
         table = pd.DataFrame(
             columns = header_line.strip().split(','),
-            data=[line.strip().split(',') for line in lines]
+            data=data
         )
         return DecTable.table_to_dectable(table=table)
 

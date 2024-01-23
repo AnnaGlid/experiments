@@ -128,7 +128,6 @@ def save_tables(response):
     with open(filepath, 'w') as f:
         f.write(file_content)
 
-    # breakpoint()
     chunksize = 8192
     response = StreamingHttpResponse(
         FileWrapper(open(filepath, 'rb'), chunksize),
@@ -204,7 +203,6 @@ def save_trees(response):
     filepath = FILE_BASE_DIR + '/Files/' + filename   
     with open(filepath, 'w') as f:
         f.write(file_content)    
-    # breakpoint()
     chunksize = 8192
     response = StreamingHttpResponse(
         FileWrapper(open(filepath, 'rb'), chunksize),
@@ -245,6 +243,7 @@ def get_rules_html(rules_info: dict)-> str:
     '''
     for rule_info in rules_info:
         rule = rule_info['rule']
+        rule = f'{" ∧ ".join(rule.split()[:-1])} ⇒ {rule.split()[-1]}'
         length = rule_info['length']
         support = rule_info['support']
         html_code += f'''
@@ -257,7 +256,7 @@ def get_rules_html(rules_info: dict)-> str:
     html_code += '</table>'
     return html_code
 
-def prepare_algorythms(response, rules: list[str], tables_df: list, max_nr_trees: int)->dict:
+def prepare_algorythms_parameters(response, rules: list[str], tables_df: list, max_nr_trees: int)->dict:
     rules_info = []
     if not len(rules):
         return render(
@@ -276,7 +275,6 @@ def prepare_algorythms(response, rules: list[str], tables_df: list, max_nr_trees
     parameters = {
         'rules_table': get_rules_html(rules_info), 
         'max_nr': max_nr_trees, 
-        'algorythm': 'A',
         'rules_count': len(rules),
         'avg_length': round(sum([rule.count('=')-1 for rule in rules]) / len(rules), 2),
         'avg_support': round(sum([rule['support'] for rule in rules_info]) / len(rules_info), 2)
@@ -290,7 +288,8 @@ def a(response):
     if parameters_a is None:
         tables = [dectable.table for dectable in all_tables]
         max_nr_trees, rules_a = MainInz.algorythm_a(get_tree_list())
-        parameters_a = prepare_algorythms(response, rules_a, tables, max_nr_trees)
+        parameters_a = prepare_algorythms_parameters(response, rules_a, tables, max_nr_trees)
+        parameters_a['algorythm'] = 'A'
     return render(response, 'main/rules.html', parameters_a)
 
 def h(response):
@@ -300,5 +299,6 @@ def h(response):
     if parameters_h is None:
         tables = [dectable.table for dectable in all_tables]
         max_nr_trees, rules_h = MainInz.heuristic1(get_tree_list())
-        parameters_h = prepare_algorythms(response, rules_h, tables, max_nr_trees)
+        parameters_h = prepare_algorythms_parameters(response, rules_h, tables, max_nr_trees)
+        parameters_h['algorythm'] = 'H'
     return render(response, 'main/rules.html', parameters_h)

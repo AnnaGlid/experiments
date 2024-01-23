@@ -249,3 +249,7 @@ form {
     padding: 5px;
   }
   
+  .image{
+    border-style: groove;
+  }
+  

@@ -91,9 +91,9 @@ def save_trees_to_file(list_of_trees: list[DecTree], folder_path: str):
     folder_path = f'{folder_path}/' if not folder_path.endswith('/') else folder_path
     for idx, tree in enumerate(list_of_trees):
         rules = tree.rules
-        vis = TreeVis(rules, 'd')
+        vis = TreeVis(rules, 'd', name=str(idx+1), folder_path=folder_path)
         vis.construct_tree()
-        vis.draw(show=False, save=True, path=f'{folder_path}{idx+1}.png')
+        vis.draw()
 
 
 #region old
