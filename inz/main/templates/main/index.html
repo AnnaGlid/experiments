@@ -1,7 +1,6 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    {% if info %}
         <div class="info">{{ info }}</div>
         <div class="options-container">
             <a href="/delete-tables/">
@@ -16,8 +15,13 @@
             <a href="/get-trees/">
                 <div class="btn option next-step"> Wygeneruj drzewa </div>
             </a>
+            {% if trees_loaded %}            
+            <a href="/trees-home/">
+                <div class="btn option next-step"> Wygenerowane drzewa </div>
+            </a>            
+            {% endif %}               
         </div>        
-    {% endif %}
+ 
     <div class="seg-container"> 
         <div class="seg">
             <div class="subtitle">

@@ -7,8 +7,6 @@ sys.path.append('..')
 from algorythms import MainInz
 from algorythms.DecTable import DecTable
 from algorythms.DecTree import DecTree
-from .static import consts
-import mimetypes
 import os
 
 
@@ -23,6 +21,14 @@ def index(response, info: str|None=None):
     global all_tables
     form = SetParametersFormTables()
     form_load = UploadFileForm()
+    trees = get_tree_list()
+    if trees:
+        return render(response, 'main/index.html', 
+                      {'form': form, 
+                       'form_load': form_load, 
+                       'info': f'Suma wczytanych tablic: {len(all_tables)}',
+                       'trees_loaded': True
+                    })
     if info:
         return render(response, 'main/index.html', {'form': form, 'form_load': form_load, 'info': info})
     else:
@@ -60,6 +66,14 @@ def get_tables(response):
             return render(response, 'main/index.html', {info:info,'form': form,'form_load': form_load})              
 
     info = f'Tablice wygenerowane. Suma wczytanych tablic: {len(all_tables)}' if len(all_tables) else 'Nie wczytano tablic.'
+    trees = get_tree_list()
+    if trees:
+        return render(response, 'main/index.html', 
+                      {'form': form, 
+                       'form_load': form_load, 
+                       'info': f'Suma wczytanych tablic: {len(all_tables)}',
+                       'trees_loaded': True
+                    })    
     return render(response, 
         'main/index.html',
         {
@@ -101,6 +115,8 @@ def show_tables(response):
 
 def delete_tables(response):
     global all_tables
+    global all_tables_and_trees
+    all_tables_and_trees = []
     all_tables = []
     form = SetParametersFormTables()
     form_load = UploadFileForm()
@@ -138,37 +154,40 @@ def save_tables(response):
     return response
 
 def load_tables(request):
-    global all_tables
-    filename = 'tables_uploaded.csv'
-    filepath = FILE_BASE_DIR + '/Files/' + filename   
-    if request.method == "POST":
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = request.FILES.get('file', None)
-            if file:
-                with open(filepath, "wb+") as destination:
-                    for chunk in file.chunks():
-                        destination.write(chunk)     
-                with open(filepath, 'r') as f:
-                    file_content = f.read()
-                new_tables_csv =[]
-                new_table = ''
-                for line in file_content.split('\n'):
-                    if any([sign.isalpha() for sign in line]):
-                        # is header
-                        new_tables_csv.append(new_table.strip()) if new_table else None
-                        new_table = line + '\n'
-                    else:
-                        new_table += f'{line}\n'   
-                new_tables_csv.append(new_table.strip())             
-                for table in new_tables_csv:
-                    dectable = DecTable.csv_table_to_dectable(table)
-                    all_tables.append(dectable)
-                return index(response=request, info=f"Tablice wczytane. Suma wczytanych tablic: {len(all_tables)}")
-            else:
-                return index(response=request, info="Wczytanie pliku nie powiodło się")
-    else:
-        return redirect('/')
+    try:
+        global all_tables
+        filename = 'tables_uploaded.csv'
+        filepath = FILE_BASE_DIR + '/Files/' + filename   
+        if request.method == "POST":
+            form = UploadFileForm(request.POST, request.FILES)
+            if form.is_valid():
+                file = request.FILES.get('file', None)
+                if file:
+                    with open(filepath, "wb+") as destination:
+                        for chunk in file.chunks():
+                            destination.write(chunk)     
+                    with open(filepath, 'r') as f:
+                        file_content = f.read()
+                    new_tables_csv =[]
+                    new_table = ''
+                    for line in file_content.split('\n'):
+                        if any([sign.isalpha() for sign in line]):
+                            # is header
+                            new_tables_csv.append(new_table.strip()) if new_table else None
+                            new_table = line + '\n'
+                        else:
+                            new_table += f'{line}\n'   
+                    new_tables_csv.append(new_table.strip())             
+                    for table in new_tables_csv:
+                        dectable = DecTable.csv_table_to_dectable(table)
+                        all_tables.append(dectable)
+                    return index(response=request, info=f"Tablice wczytane. Suma wczytanych tablic: {len(all_tables)}")
+                else:
+                    return index(response=request, info="Wczytanie pliku nie powiodło się")
+        else:
+            return redirect('/')
+    except:
+        return index(response=request, info="Wczytanie pliku nie powiodło się")
     
 def get_trees(response):
     global all_tables
