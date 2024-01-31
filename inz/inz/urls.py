@@ -30,5 +30,7 @@ urlpatterns = [
     path('save-trees/', views.save_trees),
     path('show-trees/', views.show_trees),
     path('a/', views.a),
-    path('h/', views.h)
+    path('h/', views.h),
+    path('save-results/A', views.save_results_a),
+    path('save-results/H', views.save_results_h)
 ]

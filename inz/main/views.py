@@ -293,6 +293,7 @@ def prepare_algorythms_parameters(response, rules: list[str], tables_df: list, m
         })
     parameters = {
         'rules_table': get_rules_html(rules_info), 
+        'rules': rules_info,
         'max_nr': max_nr_trees, 
         'rules_count': len(rules),
         'avg_length': round(sum([rule.count('=')-1 for rule in rules]) / len(rules), 2),
@@ -311,7 +312,7 @@ def a(response):
         parameters_a['algorythm'] = 'A'
     return render(response, 'main/rules.html', parameters_a)
 
-def h(response):
+def h(response):    
     global all_tables_and_trees
     global all_tables
     global parameters_h
@@ -321,3 +322,39 @@ def h(response):
         parameters_h = prepare_algorythms_parameters(response, rules_h, tables, max_nr_trees)
         parameters_h['algorythm'] = 'H'
     return render(response, 'main/rules.html', parameters_h)
+
+def save_results(response, algorythm: str):
+    if algorythm == 'a':
+        global parameters_a
+        parameters = parameters_a
+    else:
+        global parameters_h    
+        parameters = parameters_h
+
+    filename = f'results_{algorythm}.txt'
+    filepath = FILE_BASE_DIR + '/Files/' + filename   
+    file_content = f'Wyniki dla algorytmu {algorythm.upper()}\nReguły:\n'
+    for rule_info in parameters.get('rules',[]):
+        file_content += f'{rule_info.get("rule")};długość:{rule_info.get("length")};wsparcie:{rule_info.get("support")}\n'
+    file_content += f'''Liczba reguł: {parameters.get("rules_count")}
+Maksymalna liczba drzew, dla których reguła jest prawdziwa: {parameters.get("max_nr")}
+Średnia długość reguł: {parameters.get("avg_length")}
+Średnie wsparcie reguł: {parameters.get("avg_support")}\n'''
+
+    with open(filepath, 'w') as f:
+        f.write(file_content)
+
+    chunksize = 8192
+    response = StreamingHttpResponse(
+        FileWrapper(open(filepath, 'rb'), chunksize),
+        content_type='text/plain'
+    )
+    response['Content-Length'] = os.path.getsize(filepath)
+    response['Content-Disposition'] = f'Attachment;filename={filename}'
+    return response
+
+def save_results_a(response):
+    return save_results(response, 'a')
+
+def save_results_h(response):
+    return save_results(response, 'h')
